@@ -4,7 +4,7 @@ defmodule Aocday1 do
     f=read_file()
     |> Enum.sum()
 
-    IO.puts(f)
+    IO.inspect(f)
 
     children = [
 
@@ -30,6 +30,7 @@ defmodule Aocday1 do
     |> String.split("\n")
     |> Enum.filter(fn x -> x != "" end)
     |> discard_text
+    |> discard_mid_chars
     |> append_numbers
 
   end
@@ -41,6 +42,16 @@ defmodule Aocday1 do
   def discard_text(input) do
     input
     |> Enum.map(fn x -> Regex.replace(~r/[^0-9]+/ ,x, "") end)
+  end
+  def discard_mid_chars(input) do
+    input
+    |> Enum.map(fn x -> {String.slice(x, 0, 1), String.slice(x, -1, 1)} end)
+    |> Enum.map(fn {x, y} -> x <> y end)
+    #|> Enum.map(fn [a|b] -> a end)
+   # |> Enum.map(fn x -> Enum.join(x) end)
+
+
+
   end
   def append_numbers(input) do
     input
