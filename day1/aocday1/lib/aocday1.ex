@@ -29,6 +29,7 @@ defmodule Aocday1 do
     file
     |> String.split("\n")
     |> Enum.filter(fn x -> x != "" end)
+    |> replace_numbersText
     |> discard_text
     |> discard_mid_chars
     |> append_numbers
@@ -38,17 +39,43 @@ defmodule Aocday1 do
   defp text_parse({:error, reason}) do
     IO.puts("Error: #{reason}")
   end
+  def replace_numbersText(input) do
+     dictionary = [
+      {"oneight", "18"},
+      {"twone", "21"},
+      {"fiveight", "58"},
+      {"sevenine", "79"},
+      {"eightwo", "82"},
+      {"eighthree", "83"},
+      {"nineight", "98"},
 
+      {"one", "1"},
+      {"two", "2"},
+      {"three", "3"},
+      {"four", "4"},
+      {"five", "5"},
+      {"six", "6"},
+      {"seven", "7"},
+      {"eight", "8"},
+      {"nine", "9"}
+
+    ]
+    input
+    |> Enum.map(fn x -> Enum.reduce(dictionary,x, fn {a,b}, acc-> String.replace(acc,a,b) end) end)
+
+
+
+  end
   def discard_text(input) do
     input
+
     |> Enum.map(fn x -> Regex.replace(~r/[^0-9]+/ ,x, "") end)
   end
   def discard_mid_chars(input) do
     input
     |> Enum.map(fn x -> {String.slice(x, 0, 1), String.slice(x, -1, 1)} end)
     |> Enum.map(fn {x, y} -> x <> y end)
-    #|> Enum.map(fn [a|b] -> a end)
-   # |> Enum.map(fn x -> Enum.join(x) end)
+
 
 
 
